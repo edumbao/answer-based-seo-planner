@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Answer-Based SEO Article Planner</title>
-  <meta name="description" content="Turn a search question into a structured SEO article brief with H1, H2s, audience, angle, examples, and checklist items." />
+  <meta name="description" content="A simple free tool for turning a search question into a basic article planning prompt." />
 
   <style>
     body {
@@ -18,27 +18,27 @@
     }
 
     .container {
-      max-width: 960px;
+      max-width: 900px;
       margin: 0 auto;
       padding: 40px 20px;
     }
 
     .hero {
       background: linear-gradient(135deg, #e8f4ff, #e7fffb);
-      padding: 40px;
+      padding: 36px;
       border-radius: 24px;
-      margin-bottom: 30px;
+      margin-bottom: 28px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.06);
     }
 
     h1 {
-      font-size: 42px;
+      font-size: 40px;
       line-height: 1.1;
       margin-bottom: 12px;
     }
 
     h2 {
-      margin-top: 34px;
+      margin-top: 30px;
       font-size: 26px;
     }
 
@@ -65,7 +65,7 @@
     }
 
     button {
-      margin-top: 22px;
+      margin-top: 20px;
       padding: 14px 22px;
       border: none;
       border-radius: 12px;
@@ -85,7 +85,7 @@
       border: 1px solid #dce6ef;
       border-radius: 18px;
       padding: 24px;
-      margin-top: 28px;
+      margin-top: 24px;
       white-space: pre-wrap;
       box-shadow: 0 8px 24px rgba(0,0,0,0.05);
     }
@@ -94,6 +94,12 @@
       font-size: 14px;
       color: #516070;
     }
+
+    .footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #627083;
+    }
   </style>
 </head>
 
@@ -101,12 +107,12 @@
   <main class="container">
     <section class="hero">
       <h1>Answer-Based SEO Article Planner</h1>
-      <p>Turn a search question into a structured, helpful, non-generic article brief.</p>
-      <p class="note">Use this tool before writing a blog post in ChatGPT, Google Docs, or any writing app.</p>
+      <p>Turn a search question into a simple article planning prompt.</p>
+      <p class="note">This free version helps you organize the basic direction before writing.</p>
     </section>
 
     <section>
-      <h2>Create Your Article Brief</h2>
+      <h2>Create a Basic Article Planning Prompt</h2>
 
       <label for="question">Article question</label>
       <input id="question" placeholder="Example: How to find accurate B2B contact information for cold outreach" />
@@ -114,27 +120,29 @@
       <label for="audience">Main audience</label>
       <textarea id="audience" placeholder="Example: SaaS founders, sales reps, lead gen specialists, small business owners, and B2B marketers"></textarea>
 
-      <label for="angle">Article angle</label>
-      <textarea id="angle" placeholder="Example: Accuracy matters more than volume. Build a clean test list before scaling outreach."></textarea>
+      <label for="angle">Main angle or point of view</label>
+      <textarea id="angle" placeholder="Example: Accuracy matters more than volume. Start with a focused test list before scaling."></textarea>
 
-      <label for="opinion">Strong opinion</label>
-      <textarea id="opinion" placeholder="Example: Most teams fail because they buy static lead lists."></textarea>
-
-      <label for="workflow">Recommended workflow</label>
-      <textarea id="workflow" placeholder="Example: Choose target industry and location, collect NAP and websites, find decision-makers, verify emails, clean records, segment the list, prepare outreach."></textarea>
-
-      <label for="example">Example or case scenario</label>
+      <label for="example">Example or scenario</label>
       <textarea id="example" placeholder="Example: A SaaS founder targeting dental clinics in Austin, Texas."></textarea>
 
       <label for="cta">Call to action</label>
-      <textarea id="cta" placeholder="Example: Try Targetron, verify an existing list, build a small test list first, and compare data sources before scaling."></textarea>
+      <textarea id="cta" placeholder="Example: Try the product, download a checklist, or build a small test list first."></textarea>
 
-      <button onclick="generateBrief()">Generate Article Brief Prompt</button>
+      <button onclick="generatePrompt()">Generate Prompt</button>
 
-      <div id="output" class="output">Your article brief prompt will appear here.</div>
+      <div id="output" class="output">Your prompt will appear here.</div>
 
-      <button onclick="copyBrief()">Copy Prompt</button>
+      <button onclick="copyPrompt()">Copy Prompt</button>
     </section>
+
+    <section>
+      <h2>How to Use This Tool</h2>
+      <p>Enter one search question, add the audience and article direction, then generate a basic prompt you can copy into your writing tool.</p>
+      <p>This public version is intentionally simple. Keep private checklists, advanced workflows, and internal strategy in your own private files.</p>
+    </section>
+
+    <p class="footer">Copyright © 2026 Ed Umbao. All rights reserved.</p>
   </main>
 
   <script>
@@ -142,52 +150,51 @@
       return document.getElementById(id).value.trim();
     }
 
-    function generateBrief() {
+    function generatePrompt() {
       const question = getValue("question");
       const audience = getValue("audience");
       const angle = getValue("angle");
-      const opinion = getValue("opinion");
-      const workflow = getValue("workflow");
       const example = getValue("example");
       const cta = getValue("cta");
 
-      const prompt = `I’m writing a blog post answering this question: "${question}"
+      const prompt = `I am writing a blog post answering this question:
 
-Please create an initial review draft using the following information:
+"${question}"
 
-Audience:
+Please create an initial review draft using this information:
+
+Main audience:
 ${audience}
 
-Article angle:
+Main angle or point of view:
 ${angle}
 
-Strong opinion:
-${opinion}
-
-Recommended workflow:
-${workflow}
-
-Example or case scenario:
+Example or scenario:
 ${example}
 
 Call to action:
 ${cta}
 
-Please follow these rules:
-- Use the main keyword from the question in the H1 and first H2.
-- Make the first H2 answer the question directly.
-- Use related search terms naturally in the remaining H2s.
-- Use only 5–6 H2s, including the introduction and conclusion.
-- Avoid vague headings like "Final Thoughts."
-- Avoid generic AI-style introductions.
-- Add practical examples, checklist sections, comparison tables, and internal link placeholders.
-- Write this as an initial review draft, not the final polished article.`;
+Please follow these basic writing rules:
+- Answer the question clearly in the introduction.
+- Use the main search question as the basis for the H1.
+- Use a specific first H2 that directly answers the question.
+- Keep the structure focused and easy to follow.
+- Use short paragraphs.
+- Add examples where they help.
+- Write this as an initial review draft, not a final polished article.`;
 
       document.getElementById("output").textContent = prompt;
     }
 
-    function copyBrief() {
+    function copyPrompt() {
       const output = document.getElementById("output").textContent;
+
+      if (!output || output === "Your prompt will appear here.") {
+        alert("Generate a prompt first.");
+        return;
+      }
+
       navigator.clipboard.writeText(output);
       alert("Prompt copied!");
     }
