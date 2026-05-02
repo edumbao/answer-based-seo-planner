@@ -8,141 +8,741 @@
   <meta name="description" content="A simple free tool for turning a search question into a basic article planning prompt." />
 
   <style>
+    :root {
+      --bg: #070b16;
+      --bg-soft: #0b1020;
+      --panel: #111827;
+      --panel-2: #151f33;
+      --panel-3: #0f172a;
+      --border: #24324a;
+      --text: #eef4ff;
+      --muted: #9fb0c7;
+      --muted-2: #c4d1e4;
+      --blue: #3b82f6;
+      --green: #22c55e;
+      --cyan: #06b6d4;
+      --purple: #8b5cf6;
+      --shadow: rgba(0, 0, 0, 0.42);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: Arial, sans-serif;
-      background: #f6f9fb;
-      color: #172033;
+      background:
+        radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(34, 197, 94, 0.14), transparent 28%),
+        radial-gradient(circle at 50% 20%, rgba(139, 92, 246, 0.10), transparent 35%),
+        var(--bg);
+      color: var(--text);
       margin: 0;
       padding: 0;
       line-height: 1.6;
     }
 
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
     .container {
-      max-width: 900px;
+      max-width: 1160px;
       margin: 0 auto;
-      padding: 40px 20px;
+      padding: 0 20px;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(14px);
+      background: rgba(7, 11, 22, 0.72);
+      border-bottom: 1px solid rgba(36, 50, 74, 0.72);
+    }
+
+    .nav-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--blue), var(--green));
+      box-shadow: 0 10px 24px rgba(59, 130, 246, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: white;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-cta {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      color: #cfe1ff;
+      font-weight: 700;
     }
 
     .hero {
-      background: linear-gradient(135deg, #e8f4ff, #e7fffb);
-      padding: 36px;
-      border-radius: 24px;
-      margin-bottom: 28px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      padding: 80px 0 44px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.10);
+      border: 1px solid rgba(34, 197, 94, 0.25);
+      color: #9ff0be;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 18px;
     }
 
     h1 {
-      font-size: 40px;
-      line-height: 1.1;
-      margin-bottom: 12px;
+      font-size: clamp(42px, 6vw, 68px);
+      line-height: 0.98;
+      letter-spacing: -0.06em;
+      margin: 0 0 20px;
     }
 
-    h2 {
-      margin-top: 30px;
-      font-size: 26px;
+    .hero-text {
+      color: var(--muted-2);
+      font-size: 19px;
+      max-width: 680px;
+      margin-bottom: 26px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 26px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 0;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease, border 0.15s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.96;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue), var(--green));
+      color: white;
+      box-shadow: 0 14px 30px rgba(59, 130, 246, 0.25);
+    }
+
+    .btn-secondary {
+      background: rgba(17, 24, 39, 0.85);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .trust-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .trust-pill {
+      padding: 8px 11px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .preview-card {
+      position: relative;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.025)),
+        var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: 0 24px 60px var(--shadow);
+      overflow: hidden;
+    }
+
+    .preview-card::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background: radial-gradient(circle at top right, rgba(34, 197, 94, 0.25), transparent 34%);
+      pointer-events: none;
+    }
+
+    .preview-top {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #475569;
+    }
+
+    .dot:nth-child(1) { background: #ef4444; }
+    .dot:nth-child(2) { background: #f59e0b; }
+    .dot:nth-child(3) { background: #22c55e; }
+
+    .score-badge {
+      color: #bff7d1;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.11);
+      border: 1px solid rgba(34, 197, 94, 0.25);
+    }
+
+    .mock-line {
+      position: relative;
+      height: 12px;
+      border-radius: 99px;
+      background: #263550;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .mock-line span {
+      display: block;
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--blue), var(--green));
+    }
+
+    .mock-list {
+      position: relative;
+      margin-top: 22px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .mock-item {
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .mock-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: rgba(59, 130, 246, 0.18);
+      color: #bfdbfe;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+    }
+
+    .mock-item strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+
+    .mock-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .section {
+      padding: 34px 0;
+    }
+
+    .section-title {
+      font-size: clamp(30px, 4vw, 44px);
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+      margin: 0 0 12px;
+    }
+
+    .section-subtitle {
+      color: var(--muted-2);
+      font-size: 17px;
+      max-width: 720px;
+      margin: 0 0 26px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .feature-card {
+      background: rgba(17, 24, 39, 0.74);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
+    }
+
+    .feature-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: rgba(59, 130, 246, 0.15);
+      color: #bfdbfe;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      font-size: 20px;
+    }
+
+    .feature-card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .tool-wrap {
+      display: grid;
+      grid-template-columns: 1fr 0.95fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)),
+        var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.30);
     }
 
     label {
-      font-weight: bold;
+      font-weight: 800;
       display: block;
-      margin-top: 18px;
-      margin-bottom: 6px;
+      margin-top: 16px;
+      margin-bottom: 7px;
+      color: #e5eefc;
+      font-size: 14px;
     }
 
     input,
     textarea {
       width: 100%;
-      padding: 12px;
-      border: 1px solid #d3dde8;
-      border-radius: 12px;
-      font-size: 16px;
-      box-sizing: border-box;
+      padding: 13px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 15px;
+      background: #0d1424;
+      color: var(--text);
+      outline: none;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #72839e;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
     }
 
     textarea {
-      min-height: 90px;
+      min-height: 88px;
       resize: vertical;
     }
 
-    button {
+    .button-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
       margin-top: 20px;
-      padding: 14px 22px;
-      border: none;
-      border-radius: 12px;
-      background: #1570ef;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #0f5fc8;
     }
 
     .output {
-      background: white;
-      border: 1px solid #dce6ef;
-      border-radius: 18px;
-      padding: 24px;
-      margin-top: 24px;
+      min-height: 520px;
+      background: #08111f;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 20px;
+      padding: 22px;
       white-space: pre-wrap;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+      color: #dbeafe;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      overflow-x: auto;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
     }
 
-    .note {
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .step {
+      background: rgba(17, 24, 39, 0.70);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+
+    .step-number {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(59,130,246,0.9), rgba(34,197,94,0.9));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .step h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
       font-size: 14px;
-      color: #516070;
     }
 
     .footer {
-      margin-top: 40px;
+      padding: 34px 0 46px;
+      color: var(--muted);
+      text-align: center;
       font-size: 14px;
-      color: #627083;
+    }
+
+    .small-note {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .tool-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-grid,
+      .steps {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .output {
+        min-height: 360px;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .feature-grid,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 52px 0 28px;
+      }
+
+      .panel,
+      .preview-card {
+        padding: 20px;
+      }
+
+      .btn {
+        width: 100%;
+      }
     }
   </style>
 </head>
 
 <body>
-  <main class="container">
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="#" class="brand">
+        <span class="brand-mark">↗</span>
+        <span>SEO Planner</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#tool">Tool</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#tool" class="nav-cta">Try the tool</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
     <section class="hero">
-      <h1>Answer-Based SEO Article Planner</h1>
-      <p>Turn a search question into a simple article planning prompt.</p>
-      <p class="note">This free version helps you organize the basic direction before writing.</p>
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Free SEO planning tool</div>
+          <h1>Plan better articles from real search questions.</h1>
+          <p class="hero-text">
+            Turn one search question into a clear article planning prompt with audience,
+            angle, example, and call to action.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#tool" class="btn btn-primary">Start planning</a>
+            <a href="#how-it-works" class="btn btn-secondary">See how it works</a>
+          </div>
+
+          <div class="trust-row">
+            <span class="trust-pill">No login required</span>
+            <span class="trust-pill">No paid tool needed</span>
+            <span class="trust-pill">Copy-paste output</span>
+          </div>
+        </div>
+
+        <div class="preview-card">
+          <div class="preview-top">
+            <div class="window-dots">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+            <span class="score-badge">Brief ready</span>
+          </div>
+
+          <div class="mock-line"><span style="width: 92%;"></span></div>
+          <div class="mock-line"><span style="width: 74%;"></span></div>
+          <div class="mock-line"><span style="width: 58%;"></span></div>
+
+          <div class="mock-list">
+            <div class="mock-item">
+              <div class="mock-icon">?</div>
+              <div>
+                <strong>Start with a question</strong>
+                <p>Use the search question as the foundation for the article.</p>
+              </div>
+            </div>
+
+            <div class="mock-item">
+              <div class="mock-icon">◎</div>
+              <div>
+                <strong>Add the audience and angle</strong>
+                <p>Clarify who the article is for and what point of view it should take.</p>
+              </div>
+            </div>
+
+            <div class="mock-item">
+              <div class="mock-icon">✓</div>
+              <div>
+                <strong>Generate a writing prompt</strong>
+                <p>Copy the output and use it as a starting point for a review draft.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section>
-      <h2>Create a Basic Article Planning Prompt</h2>
+    <section id="features" class="section">
+      <div class="container">
+        <h2 class="section-title">A simple planning layer before writing</h2>
+        <p class="section-subtitle">
+          Use this public demo to organize the basic direction of an article before sending it to a writer or AI writing tool.
+        </p>
 
-      <label for="question">Article question</label>
-      <input id="question" placeholder="Example: How to find accurate B2B contact information for cold outreach" />
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">⌕</div>
+            <h3>Question-led structure</h3>
+            <p>Start with the actual question readers are searching for instead of writing a broad generic guide.</p>
+          </div>
 
-      <label for="audience">Main audience</label>
-      <textarea id="audience" placeholder="Example: SaaS founders, sales reps, lead gen specialists, small business owners, and B2B marketers"></textarea>
+          <div class="feature-card">
+            <div class="feature-icon">◉</div>
+            <h3>Audience clarity</h3>
+            <p>Add the target reader so the article has a clear direction from the beginning.</p>
+          </div>
 
-      <label for="angle">Main angle or point of view</label>
-      <textarea id="angle" placeholder="Example: Accuracy matters more than volume. Start with a focused test list before scaling."></textarea>
-
-      <label for="example">Example or scenario</label>
-      <textarea id="example" placeholder="Example: A SaaS founder targeting dental clinics in Austin, Texas."></textarea>
-
-      <label for="cta">Call to action</label>
-      <textarea id="cta" placeholder="Example: Try the product, download a checklist, or build a small test list first."></textarea>
-
-      <button onclick="generatePrompt()">Generate Prompt</button>
-
-      <div id="output" class="output">Your prompt will appear here.</div>
-
-      <button onclick="copyPrompt()">Copy Prompt</button>
+          <div class="feature-card">
+            <div class="feature-icon">✦</div>
+            <h3>Copy-ready prompt</h3>
+            <p>Generate a clean prompt you can copy into your preferred writing tool.</p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section>
-      <h2>How to Use This Tool</h2>
-      <p>Enter one search question, add the audience and article direction, then generate a basic prompt you can copy into your writing tool.</p>
-      <p>This public version is intentionally simple. Keep private checklists, advanced workflows, and internal strategy in your own private files.</p>
+    <section id="tool" class="section">
+      <div class="container">
+        <h2 class="section-title">Create a basic article planning prompt</h2>
+        <p class="section-subtitle">
+          Fill in the fields below. The tool will create a simple prompt for an initial article review draft.
+        </p>
+
+        <div class="tool-wrap">
+          <div class="panel">
+            <label for="question">Article question</label>
+            <input id="question" placeholder="Example: How to find accurate B2B contact information for cold outreach" />
+
+            <label for="audience">Main audience</label>
+            <textarea id="audience" placeholder="Example: SaaS founders, sales reps, lead gen specialists, small business owners, and B2B marketers"></textarea>
+
+            <label for="angle">Main angle or point of view</label>
+            <textarea id="angle" placeholder="Example: Accuracy matters more than volume. Start with a focused test list before scaling."></textarea>
+
+            <label for="example">Example or scenario</label>
+            <textarea id="example" placeholder="Example: A SaaS founder targeting dental clinics in Austin, Texas."></textarea>
+
+            <label for="cta">Call to action</label>
+            <textarea id="cta" placeholder="Example: Try the product, download a checklist, or build a small test list first."></textarea>
+
+            <div class="button-row">
+              <button class="btn btn-primary" onclick="generatePrompt()">Generate prompt</button>
+              <button class="btn btn-secondary" onclick="copyPrompt()">Copy prompt</button>
+              <button class="btn btn-secondary" onclick="clearForm()">Clear</button>
+            </div>
+
+            <p class="small-note">
+              This public version is intentionally simple. Keep private checklists,
+              advanced workflows, and internal strategy in private files.
+            </p>
+          </div>
+
+          <div class="panel">
+            <h3 style="margin-top: 0;">Generated prompt</h3>
+            <div id="output" class="output">Your prompt will appear here.</div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <p class="footer">Copyright © 2026 Ed Umbao. All rights reserved.</p>
+    <section id="how-it-works" class="section">
+      <div class="container">
+        <h2 class="section-title">How it works</h2>
+        <p class="section-subtitle">
+          Use this tool as a lightweight planning step before creating an article draft.
+        </p>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <h3>Enter a question</h3>
+            <p>Start with the search question your article should answer.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <h3>Add the reader</h3>
+            <p>Define the audience so the article does not become too broad.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">3</div>
+            <h3>Add direction</h3>
+            <p>Include the angle, example, and call to action.</p>
+          </div>
+
+          <div class="step">
+            <div class="step-number">4</div>
+            <h3>Copy the prompt</h3>
+            <p>Use the generated output as a starting point for a review draft.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        Copyright © 2026 Ed Umbao. All rights reserved.
+      </div>
+    </footer>
   </main>
 
   <script>
@@ -197,6 +797,15 @@ Please follow these basic writing rules:
 
       navigator.clipboard.writeText(output);
       alert("Prompt copied!");
+    }
+
+    function clearForm() {
+      document.getElementById("question").value = "";
+      document.getElementById("audience").value = "";
+      document.getElementById("angle").value = "";
+      document.getElementById("example").value = "";
+      document.getElementById("cta").value = "";
+      document.getElementById("output").textContent = "Your prompt will appear here.";
     }
   </script>
 </body>
