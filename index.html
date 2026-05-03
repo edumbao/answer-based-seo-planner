@@ -793,6 +793,15 @@ Please follow these basic writing rules:
 - Write this as an initial review draft, not a final polished article.`;
 
       document.getElementById("output").textContent = prompt;
+
+      // Google Analytics event tracking
+if (typeof gtag !== "undefined") {
+  gtag('event', 'generate_prompt_click', {
+    event_category: 'engagement',
+    event_label: 'SEO Planner Tool',
+    value: 1
+  });
+}
     }
 
     function copyPrompt() {
